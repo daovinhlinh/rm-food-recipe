@@ -45,6 +45,7 @@ export const HomeScreen = ({navigation}) => {
             justifyContent: 'space-between',
             paddingHorizontal: 10,
             paddingVertical: 10,
+            backgroundColor: 'white',
           },
         ]}>
         <Text style={styles.header}>Hello, Michelle</Text>
@@ -52,7 +53,7 @@ export const HomeScreen = ({navigation}) => {
           <Icon Ionicons name="ios-person" size={30} color="black" />
         </View>
       </View>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
           <View style={[styles.row, styles.inputWrapper]}>
             <Icon Ionicons name="md-search" size={25} color="black" />

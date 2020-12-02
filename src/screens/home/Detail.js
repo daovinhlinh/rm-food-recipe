@@ -9,7 +9,6 @@ import {
   ScrollView,
   FlatList,
 } from 'react-native';
-const tomato = require('../../asset/tomato.png');
 import {Icon} from '../../component/Icon';
 const {width, height} = Dimensions.get('window');
 
@@ -52,6 +51,7 @@ export const Detail = ({navigation, route}) => {
   const {data, ingredient} = route.params;
   const listIngredient = [];
   const instruction = [];
+
   for (let i = 1; i <= 20; i++) {
     if (
       data.meals[0]['strIngredient' + i] !== null &&
@@ -138,6 +138,12 @@ export const Detail = ({navigation, route}) => {
       </ScrollView>
     </>
   );
+
+  // return (
+  //   <View>
+  //     <Text>hello</Text>
+  //   </View>
+  // );
 };
 
 const styles = StyleSheet.create({
