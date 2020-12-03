@@ -11,14 +11,13 @@ import {
 import {ScrollView} from 'react-native-gesture-handler';
 import {Icon} from '../../component/Icon';
 import axios from 'axios';
-import Shimmer from 'react-native-shimmer';
+import ProgressLoader from 'rn-progress-loader';
 
 const {width, height} = Dimensions.get('window');
 
 const RenderItem = ({title, image, navigation}) => {
   const [data, setData] = useState([]);
   const [count, setCount] = useState(0);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchData() {
@@ -35,88 +34,90 @@ const RenderItem = ({title, image, navigation}) => {
       setCount(counter);
     }
     fetchData();
-    setLoading(false);
   }, []);
   return (
     <>
-      {loading ? (
-        <Shimmer
-          style={{
-            width: width * 0.95,
-            height: 150,
-            backgroundColor: 'white',
-
-            opacity: 1,
-            marginBottom: 10,
-            flexDirection: 'row',
-            padding: 15,
-            borderRadius: 15,
-          }}>
-          <View
-            style={{width: 120, height: 120, backgroundColor: 'gray'}}></View>
-          <View style={{justifyContent: 'flex-start', marginLeft: 15}}>
-            <Text style={{fontSize: 30}}>Loading</Text>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.push('Detail', {data: data, ingredient: count})
+        }>
+        <View style={styles.renderItem}>
+          <View style={{flex: 3}}>
+            <Image source={{uri: image}} style={styles.image} />
           </View>
-        </Shimmer>
-      ) : (
-        <TouchableOpacity
-          onPress={() =>
-            navigation.push('Detail', {data: data, ingredient: count})
-          }>
-          <View style={styles.renderItem}>
-            <View style={{flex: 3}}>
-              <Image source={{uri: image}} style={styles.image} />
-            </View>
-            <View style={{flex: 6, justifyContent: 'space-between'}}>
-              <Text style={styles.title}>{title}</Text>
-              <View
-                style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Icon AntDesign name="like2" size={22} color="black" />
-                  <Text style={styles.text}>100 likes</Text>
-                </View>
-                <View style={{flexDirection: 'row'}}>
-                  <Text style={styles.tag}>food</Text>
-                  <Text style={styles.tag}>fastfood</Text>
-                </View>
+          <View style={{flex: 6, justifyContent: 'space-between'}}>
+            <Text style={styles.title}>{title}</Text>
+            <View
+              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Icon AntDesign name="like2" size={22} color="black" />
+                <Text style={styles.text}>100 likes</Text>
+              </View>
+              <View style={{flexDirection: 'row'}}>
+                <Text style={styles.tag}>food</Text>
+                <Text style={styles.tag}>fastfood</Text>
               </View>
             </View>
           </View>
-        </TouchableOpacity>
-      )}
+        </View>
+      </TouchableOpacity>
     </>
   );
 };
 
 export const List = ({route, navigation}) => {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     async function fetchData() {
       let data = await axios.get(
         `https://www.themealdb.com/api/json/v1/1/filter.php?c=${route.params.title}`,
       );
       setData(data.data.meals);
+      setLoading(false);
     }
     fetchData();
   }, []);
+
   return (
-    <ScrollView>
-      <View
-        style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          paddingTop: 20,
-        }}>
-        {data.slice(0, 5).map((item, key) => (
-          <RenderItem
-            title={item.strMeal}
-            image={item.strMealThumb}
-            key={key}
-            navigation={navigation}
+    <>
+      {loading ? (
+        <View
+          style={{
+            backgroundColor: 'white',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flex: 1,
+          }}>
+          <ProgressLoader
+            visible={loading}
+            isModal={true}
+            isHUD={true}
+            hudColor={'#000000'}
+            color={'#FFFFFF'}
           />
-        ))}
-      </View>
-    </ScrollView>
+        </View>
+      ) : (
+        <ScrollView>
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              paddingTop: 20,
+            }}>
+            {data.slice(0, 5).map((item, key) => (
+              <RenderItem
+                title={item.strMeal}
+                image={item.strMealThumb}
+                key={key}
+                navigation={navigation}
+              />
+            ))}
+          </View>
+        </ScrollView>
+      )}
+    </>
   );
 };
 

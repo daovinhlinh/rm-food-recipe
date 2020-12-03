@@ -24,7 +24,8 @@
     "react-native-screens": "^2.15.0",
     "react-native-shimmer": "^0.6.0",
     "react-native-swiper": "^1.6.0",
-    "react-native-vector-icons": "^7.1.0"
+    "react-native-vector-icons": "^7.1.0",
+    "rn-progress-loader": "^1.0.8"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",

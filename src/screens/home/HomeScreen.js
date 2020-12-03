@@ -14,6 +14,7 @@ import {Recipe} from './Recipe';
 import Shimmer from 'react-native-shimmer';
 import axios from 'axios';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import ProgressLoader from 'rn-progress-loader';
 
 const {width, height} = Dimensions.get('window');
 
@@ -38,123 +39,84 @@ export const HomeScreen = ({navigation}) => {
 
   return (
     <>
-      <View
-        style={[
-          styles.row,
-          {
-            justifyContent: 'space-between',
-            paddingHorizontal: 10,
-            paddingVertical: 10,
+      {loading ? (
+        <View
+          style={{
             backgroundColor: 'white',
-          },
-        ]}>
-        <Text style={styles.header}>Hello, Michelle</Text>
-        <View style={styles.avatar}>
-          <Icon Ionicons name="ios-person" size={30} color="black" />
+            justifyContent: 'center',
+            alignItems: 'center',
+            flex: 1,
+          }}>
+          <ProgressLoader
+            visible={loading}
+            isModal={true}
+            isHUD={true}
+            hudColor={'#000000'}
+            color={'#FFFFFF'}
+          />
         </View>
-      </View>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.container}>
-          <View style={[styles.row, styles.inputWrapper]}>
-            <Icon Ionicons name="md-search" size={25} color="black" />
-            <TextInput style={styles.input} placeholder="Search for recipes" />
-          </View>
-          {loading ? (
-            <View
-              style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
-              <Shimmer style={{width: 130, height: 130}}>
-                <View
-                  style={{
-                    backgroundColor: 'gray',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <Text>Loading..</Text>
-                </View>
-              </Shimmer>
-              <Shimmer style={{width: 130, height: 130}}>
-                <View
-                  style={{
-                    backgroundColor: 'gray',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <Text>Loading..</Text>
-                </View>
-              </Shimmer>
-              <Shimmer style={{width: 130, height: 130}}>
-                <View
-                  style={{
-                    backgroundColor: 'gray',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <Text>Loading..</Text>
-                </View>
-              </Shimmer>
+      ) : (
+        <View>
+          <View
+            style={[
+              styles.row,
+              {
+                justifyContent: 'space-between',
+                paddingHorizontal: 10,
+                paddingVertical: 10,
+                backgroundColor: 'white',
+              },
+            ]}>
+            <Text style={styles.header}>Hello, Michelle</Text>
+            <View style={styles.avatar}>
+              <Icon Ionicons name="ios-person" size={30} color="black" />
             </View>
-          ) : (
-            <FlatList
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              data={category.slice(0, 5)}
-              renderItem={({item}) => (
-                <Category
-                  title={item.strCategory}
-                  img={item.strCategoryThumb}
-                  navigation={navigation}
+          </View>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={styles.container}>
+              <View style={[styles.row, styles.inputWrapper]}>
+                <Icon Ionicons name="md-search" size={25} color="black" />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Search for recipes"
                 />
-              )}
-              keyExtractor={(item) => item.idCategory}
-              ListFooterComponent={
-                <TouchableOpacity>
-                  <View
-                    style={{justifyContent: 'center', height: height * 0.15}}>
-                    <Text>See all</Text>
-                  </View>
-                </TouchableOpacity>
-              }
-            />
-          )}
-          <Text style={styles.text}>Recommend</Text>
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            {loading === true ? (
-              <View style={{flexDirection: 'row'}}>
-                <Shimmer
-                  animationOpacity={0.4}
-                  style={{marginRight: 20, height: 300}}>
-                  <View
-                    style={{
-                      backgroundColor: 'gray',
-                      width: 150,
-                      height: 50,
-                    }}>
-                    <Text>Loading...</Text>
-                  </View>
-                </Shimmer>
-                <Shimmer
-                  animationOpacity={0.4}
-                  style={{marginRight: 20, height: 300}}>
-                  <View
-                    style={{
-                      backgroundColor: 'gray',
-                      width: 150,
-                      height: 50,
-                    }}>
-                    <Text>Loading...</Text>
-                  </View>
-                </Shimmer>
               </View>
-            ) : (
-              <View style={styles.row}>
-                <Recipe data={randomMeal} navigation={navigation} />
-                <Recipe data={randomMeal} navigation={navigation} />
-                <Recipe data={randomMeal} navigation={navigation} />
-              </View>
-            )}
+
+              <FlatList
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                data={category.slice(0, 5)}
+                renderItem={({item}) => (
+                  <Category
+                    title={item.strCategory}
+                    img={item.strCategoryThumb}
+                    navigation={navigation}
+                  />
+                )}
+                keyExtractor={(item) => item.idCategory}
+                ListFooterComponent={
+                  <TouchableOpacity>
+                    <View
+                      style={{justifyContent: 'center', height: height * 0.15}}>
+                      <Text>See all</Text>
+                    </View>
+                  </TouchableOpacity>
+                }
+              />
+              <Text style={styles.text}>Recommend</Text>
+              <ScrollView
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}>
+                <View style={styles.row}>
+                  <Recipe data={randomMeal} navigation={navigation} />
+                  <Recipe data={randomMeal} navigation={navigation} />
+                  <Recipe data={randomMeal} navigation={navigation} />
+                </View>
+              </ScrollView>
+            </View>
           </ScrollView>
         </View>
-      </ScrollView>
+      )}
     </>
   );
 };
