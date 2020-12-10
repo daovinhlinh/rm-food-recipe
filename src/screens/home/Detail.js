@@ -9,12 +9,13 @@ import {
   ScrollView,
   FlatList,
 } from 'react-native';
+import Video from 'react-native-video';
 import {Icon} from '../../component/Icon';
 const {width, height} = Dimensions.get('window');
 
 const Ingredient = ({title, measure}) => {
   return (
-    <View style={{alignItems: 'center', width: 140}}>
+    <View style={{alignItems: 'center', width: 90, marginRight: 25}}>
       <View style={styles.ingredientIcon}>
         <Image
           source={{
@@ -113,9 +114,7 @@ export const Detail = ({navigation, route}) => {
               </View>
             </View>
           </View>
-          <Text style={[styles.header, {fontSize: 20, marginTop: 20}]}>
-            Ingredients
-          </Text>
+          <Text style={[styles.header, {fontSize: 25}]}>Ingredients</Text>
           <FlatList
             data={listIngredient}
             renderItem={({item}) => (
@@ -126,7 +125,7 @@ export const Detail = ({navigation, route}) => {
             showsHorizontalScrollIndicator={false}
             style={{marginVertical: 20, borderRadius: 15}}
           />
-          <Text style={[styles.header, {fontSize: 20}]}>
+          <Text style={[styles.header, {fontSize: 25}]}>
             Cooking instruction
           </Text>
           <View>
@@ -199,5 +198,9 @@ const styles = StyleSheet.create({
     left: 20,
     padding: 5,
     borderRadius: 10,
+  },
+  backgroundVideo: {
+    width: 200,
+    height: 200,
   },
 });

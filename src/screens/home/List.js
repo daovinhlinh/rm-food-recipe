@@ -7,8 +7,9 @@ import {
   StyleSheet,
   Image,
   Dimensions,
+  FlatList,
+  ScrollView,
 } from 'react-native';
-import {ScrollView} from 'react-native-gesture-handler';
 import {Icon} from '../../component/Icon';
 import axios from 'axios';
 import ProgressLoader from 'rn-progress-loader';
@@ -51,7 +52,7 @@ const RenderItem = ({title, image, navigation}) => {
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Icon AntDesign name="like2" size={22} color="black" />
-                <Text style={styles.text}>100 likes</Text>
+                <Text style={styles.text}>100</Text>
               </View>
               <View style={{flexDirection: 'row'}}>
                 <Text style={styles.tag}>food</Text>
@@ -99,23 +100,42 @@ export const List = ({route, navigation}) => {
           />
         </View>
       ) : (
-        <ScrollView>
+        <>
+          <View style={[styles.row, styles.header]}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Icon Ionicons name="ios-arrow-back" size={30} color="black" />
+            </TouchableOpacity>
+            <Text style={{fontWeight: 'bold', fontSize: 25}}>
+              {route.params.title}
+            </Text>
+            <View style={styles.avatar}>
+              <Icon Ionicons name="ios-person" size={30} color="black" />
+            </View>
+          </View>
           <View
             style={{
               justifyContent: 'center',
               alignItems: 'center',
-              paddingTop: 20,
             }}>
-            {data.slice(0, 5).map((item, key) => (
-              <RenderItem
-                title={item.strMeal}
-                image={item.strMealThumb}
-                key={key}
-                navigation={navigation}
-              />
-            ))}
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              data={data}
+              renderItem={({item}) => (
+                <RenderItem
+                  title={item.strMeal}
+                  image={item.strMealThumb}
+                  navigation={navigation}
+                />
+              )}
+              keyExtractor={(item) => item.idMeal}
+              // removeClippedSubviews={true}
+              initialNumToRender={3}
+              maxToRenderPerBatch={3}
+              updateCellsBatchingPeriod={50}
+              windowSize={4}
+            />
           </View>
-        </ScrollView>
+        </>
       )}
     </>
   );
@@ -137,10 +157,15 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   tag: {
-    backgroundColor: 'gray',
-    marginRight: 5,
-    borderRadius: 10,
+    backgroundColor: '#ff9a00',
+    marginLeft: 5,
+    borderRadius: 20,
     paddingHorizontal: 10,
+    paddingVertical: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: 'white',
+    fontWeight: 'bold',
   },
   title: {
     fontSize: 20,
@@ -151,5 +176,23 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'black',
     marginLeft: 5,
+  },
+  row: {
+    flexDirection: 'row',
+  },
+  header: {
+    justifyContent: 'space-between',
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    backgroundColor: 'white',
+    alignItems: 'center',
+  },
+  avatar: {
+    width: 40,
+    height: 40,
+    backgroundColor: 'gray',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
   },
 });

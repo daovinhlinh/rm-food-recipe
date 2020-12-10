@@ -35,8 +35,8 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   image: {
-    width: 120,
-    height: 90,
+    width: 110,
+    height: 75,
     borderRadius: 20,
     marginLeft: 10,
   },
@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     marginTop: 5,
-    marginBottom: 20,
     fontSize: 18,
     fontWeight: 'bold',
     marginLeft: 5,

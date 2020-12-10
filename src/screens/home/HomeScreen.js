@@ -7,13 +7,12 @@ import {
   TextInput,
   ScrollView,
   FlatList,
+  TouchableOpacity,
 } from 'react-native';
 import {Icon} from '../../component/Icon';
 import {Category} from './Category';
 import {Recipe} from './Recipe';
-import Shimmer from 'react-native-shimmer';
 import axios from 'axios';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import ProgressLoader from 'rn-progress-loader';
 
 const {width, height} = Dimensions.get('window');
@@ -22,6 +21,7 @@ export const HomeScreen = ({navigation}) => {
   const [randomMeal, setRandomMeal] = useState([]);
   const [category, setCategory] = useState();
   const [loading, setLoading] = useState(true);
+  const [refresh, setRefresh] = useState(true);
   useEffect(() => {
     async function fetchAPI() {
       let randomMeal = await axios.get(
@@ -35,7 +35,7 @@ export const HomeScreen = ({navigation}) => {
       setLoading(false);
     }
     fetchAPI();
-  }, []);
+  }, [refresh]);
 
   return (
     <>
@@ -65,12 +65,15 @@ export const HomeScreen = ({navigation}) => {
                 paddingHorizontal: 10,
                 paddingVertical: 10,
                 backgroundColor: 'white',
+                alignItems: 'center',
               },
             ]}>
-            <Text style={styles.header}>Hello, Michelle</Text>
-            <View style={styles.avatar}>
+            <Text style={styles.header}>Hello, Linh</Text>
+            <TouchableOpacity
+              style={styles.avatar}
+              onPress={() => navigation.push('Profile')}>
               <Icon Ionicons name="ios-person" size={30} color="black" />
-            </View>
+            </TouchableOpacity>
           </View>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.container}>
@@ -85,7 +88,7 @@ export const HomeScreen = ({navigation}) => {
               <FlatList
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
-                data={category.slice(0, 5)}
+                data={category}
                 renderItem={({item}) => (
                   <Category
                     title={item.strCategory}
@@ -94,25 +97,18 @@ export const HomeScreen = ({navigation}) => {
                   />
                 )}
                 keyExtractor={(item) => item.idCategory}
-                ListFooterComponent={
-                  <TouchableOpacity>
-                    <View
-                      style={{justifyContent: 'center', height: height * 0.15}}>
-                      <Text>See all</Text>
-                    </View>
-                  </TouchableOpacity>
-                }
+                initialNumToRender={4}
+                maxToRenderPerBatch={3}
+                updateCellsBatchingPeriod={50}
+                windowSize={5}
               />
-              <Text style={styles.text}>Recommend</Text>
-              <ScrollView
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}>
-                <View style={styles.row}>
-                  <Recipe data={randomMeal} navigation={navigation} />
-                  <Recipe data={randomMeal} navigation={navigation} />
-                  <Recipe data={randomMeal} navigation={navigation} />
-                </View>
-              </ScrollView>
+              <View style={[styles.row, {justifyContent: 'space-between'}]}>
+                <Text style={styles.text}>Recommend</Text>
+                <TouchableOpacity onPress={() => setRefresh(!refresh)}>
+                  <Text style={styles.text}>Next</Text>
+                </TouchableOpacity>
+              </View>
+              <Recipe data={randomMeal} navigation={navigation} />
             </View>
           </ScrollView>
         </View>
@@ -124,16 +120,17 @@ export const HomeScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    height: height,
+    height: height * 0.9,
     backgroundColor: '#ffffff',
     padding: 10,
+    marginBottom: 60,
   },
   row: {
     flexDirection: 'row',
   },
   header: {
     fontWeight: 'bold',
-    fontSize: 30,
+    fontSize: 25,
   },
   avatar: {
     width: 40,
