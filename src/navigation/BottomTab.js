@@ -2,8 +2,9 @@ import React from 'react';
 import {View, Text} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {HomeNavigation} from './HomeNavigation';
-// import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Icon} from '../component/Icon';
+import {HomeScreen} from '../screens/home';
+import {Meal} from '../screens/meal';
 
 const Tab = createBottomTabNavigator();
 
@@ -15,7 +16,7 @@ function SettingsScreen() {
   );
 }
 
-export const BottomTab = () => {
+export const BottomTab = ({navigation}) => {
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
@@ -23,7 +24,7 @@ export const BottomTab = () => {
           let iconName;
           if (route.name === 'Home') {
             iconName = 'ios-home';
-          } else if (route.name === 'Setting') {
+          } else if (route.name === 'Meal') {
             iconName = 'ios-list';
           }
 
@@ -35,8 +36,8 @@ export const BottomTab = () => {
         inactiveTintColor: 'gray',
         showLabel: false,
       }}>
-      <Tab.Screen name="Home" component={HomeNavigation} />
-      <Tab.Screen name="Setting" component={SettingsScreen} />
+      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Meal" component={Meal} />
     </Tab.Navigator>
   );
 };

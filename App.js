@@ -9,11 +9,13 @@ import {
 } from 'react-native';
 import {BottomTab} from './src/navigation/BottomTab';
 import {NavigationContainer} from '@react-navigation/native';
+import {StackNavigation} from './src/navigation/StackNavigation';
 
 const App = () => {
   return (
     <NavigationContainer>
-      <BottomTab />
+      {/* <BottomTab /> */}
+      <StackNavigation />
     </NavigationContainer>
   );
 };
