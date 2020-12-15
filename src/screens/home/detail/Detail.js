@@ -9,46 +9,15 @@ import {
   ScrollView,
   FlatList,
 } from 'react-native';
-import Video from 'react-native-video';
-import {Icon} from '../../component/Icon';
+import {connect} from 'react-redux';
+import {AddToFavorite} from '../../../actions';
 const {width, height} = Dimensions.get('window');
 
-const Ingredient = ({title, measure}) => {
-  return (
-    <View style={{alignItems: 'center', width: 90, marginRight: 25}}>
-      <View style={styles.ingredientIcon}>
-        <Image
-          source={{
-            uri: `https://www.themealdb.com/images/ingredients/${title}.png`,
-          }}
-          style={{width: 50, height: 50}}
-        />
-      </View>
-      <Text style={[styles.header, {fontSize: 16}]}>{title}</Text>
-      <Text style={styles.text}>{measure}</Text>
-    </View>
-  );
-};
+import {Icon} from '../../../component/Icon';
+import {Ingredient} from './Ingredient';
+import {Instruction} from './Instruction';
 
-const Instruction = ({data}) => {
-  return (
-    <View
-      style={[
-        styles.card,
-        {
-          top: 0,
-          position: 'relative',
-          alignItems: 'flex-start',
-          marginVertical: 5,
-          borderRadius: 15,
-        },
-      ]}>
-      <Text style={[styles.text, {color: 'black', fontSize: 16}]}>{data}</Text>
-    </View>
-  );
-};
-
-export const Detail = ({navigation, route}) => {
+const Detail = ({navigation, route, AddToFavorite}) => {
   const {data, ingredient} = route.params;
   const listIngredient = [];
   const instruction = [];
@@ -72,11 +41,26 @@ export const Detail = ({navigation, route}) => {
 
   return (
     <>
-      <TouchableOpacity
-        style={styles.backIcon}
-        onPress={() => navigation.goBack()}>
-        <Icon Ionicons name="ios-arrow-back" size={30} color="white" />
-      </TouchableOpacity>
+      <View
+        style={[
+          styles.row,
+          {
+            justifyContent: 'space-between',
+            width: width * 0.9,
+            position: 'absolute',
+          },
+        ]}>
+        <TouchableOpacity
+          style={styles.icon}
+          onPress={() => navigation.goBack()}>
+          <Icon Ionicons name="ios-arrow-back" size={30} color="white" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.icon}
+          onPress={() => AddToFavorite(data)}>
+          <Icon Ionicons name="heart" size={30} color="white" />
+        </TouchableOpacity>
+      </View>
       <ScrollView style={{backgroundColor: 'white'}}>
         <View style={styles.container}>
           <View style={{height: height * 0.7, alignItems: 'center'}}>
@@ -123,12 +107,16 @@ export const Detail = ({navigation, route}) => {
             keyExtractor={(item, index) => index.toString()}
             horizontal={true}
             showsHorizontalScrollIndicator={false}
-            style={{marginVertical: 20, borderRadius: 15}}
+            style={{
+              marginVertical: 20,
+              borderRadius: 15,
+              paddingHorizontal: 20,
+            }}
           />
           <Text style={[styles.header, {fontSize: 25}]}>
             Cooking instruction
           </Text>
-          <View>
+          <View style={{alignItems: 'center'}}>
             {instruction.map((item, key) => (
               <Instruction data={item} key={key} />
             ))}
@@ -137,18 +125,19 @@ export const Detail = ({navigation, route}) => {
       </ScrollView>
     </>
   );
-
-  // return (
-  //   <View>
-  //     <Text>hello</Text>
-  //   </View>
-  // );
 };
+
+const mapStateToProps = (state) => {
+  return {
+    _product: state.favoriteFood,
+  };
+};
+
+export default connect(mapStateToProps, {AddToFavorite: AddToFavorite})(Detail);
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 20,
     paddingBottom: 20,
   },
   image: {
@@ -170,16 +159,6 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
   },
-  card: {
-    width: width * 0.9,
-    backgroundColor: 'white',
-    position: 'absolute',
-    top: width * 0.85,
-    alignItems: 'center',
-    borderRadius: 30,
-    padding: 17,
-    elevation: 10,
-  },
   header: {
     fontWeight: 'bold',
     fontSize: 35,
@@ -190,8 +169,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#746868',
   },
-  backIcon: {
-    position: 'absolute',
+  icon: {
     backgroundColor: 'gray',
     zIndex: 1,
     top: 20,
@@ -202,5 +180,15 @@ const styles = StyleSheet.create({
   backgroundVideo: {
     width: 200,
     height: 200,
+  },
+  card: {
+    width: width * 0.9,
+    backgroundColor: 'white',
+    position: 'absolute',
+    top: width * 0.85,
+    alignItems: 'center',
+    borderRadius: 30,
+    padding: 17,
+    elevation: 10,
   },
 });

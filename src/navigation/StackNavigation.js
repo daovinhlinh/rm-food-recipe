@@ -1,6 +1,7 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import {HomeScreen, Detail, List} from '../screens/home';
+import {HomeScreen, List} from '../screens/home';
+import Detail from '../screens/home/detail/Detail';
 import {Profile} from '../screens/profile';
 import {BottomTab} from './BottomTab';
 

@@ -11,7 +11,6 @@ import {
 import {Icon} from '../../component/Icon';
 import ProgressLoader from 'rn-progress-loader';
 import axios from 'axios';
-
 const {width, height} = Dimensions.get('window');
 
 const RenderItem = ({data, navigation}) => {
@@ -108,7 +107,7 @@ export const Meal = ({navigation}) => {
         </View>
       ) : (
         <ScrollView showsVerticalScrollIndicator={false}>
-          <View>
+          <View style={{backgroundColor: '#ffffff'}}>
             <View
               style={[
                 styles.row,
@@ -118,6 +117,7 @@ export const Meal = ({navigation}) => {
                   paddingVertical: 10,
                   backgroundColor: 'white',
                   alignItems: 'center',
+                  marginBottom: 20,
                 },
               ]}>
               <Text
@@ -130,7 +130,7 @@ export const Meal = ({navigation}) => {
                     paddingHorizontal: 0,
                   },
                 ]}>
-                Hello, Linh
+                Random meal
               </Text>
               <TouchableOpacity
                 style={styles.avatar}
@@ -138,25 +138,21 @@ export const Meal = ({navigation}) => {
                 <Icon Ionicons name="ios-person" size={30} color="black" />
               </TouchableOpacity>
             </View>
-            <View style={{alignItems: 'center'}}>
-              <Text
-                style={[
-                  styles.text,
-                  {alignSelf: 'center', marginBottom: 20, marginLeft: 0},
-                ]}>
-                Generate random meal
-              </Text>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => setRefresh(!refresh)}>
-                <Text style={{fontSize: 25}}>Generate</Text>
-              </TouchableOpacity>
+            <View style={{alignItems: 'center', paddingBottom: 20}}>
               <Text style={styles.text}>Breakfast</Text>
               <RenderItem data={data[0]} navigation={navigation} />
               <Text style={styles.text}>Launch</Text>
               <RenderItem data={data[1]} navigation={navigation} />
               <Text style={styles.text}>Dinner</Text>
               <RenderItem data={data[2]} navigation={navigation} />
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => setRefresh(!refresh)}>
+                <Text
+                  style={{fontSize: 23, fontWeight: 'bold', color: 'white'}}>
+                  Generate
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
         </ScrollView>
@@ -207,7 +203,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   text: {
-    fontSize: 25,
+    fontSize: 23,
     color: 'black',
     fontWeight: 'bold',
     alignSelf: 'flex-start',
@@ -223,20 +219,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: 'center',
   },
-  avatar: {
-    width: 40,
-    height: 40,
-    backgroundColor: 'gray',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
-  },
   button: {
     alignSelf: 'center',
-    paddingVertical: 10,
-    paddingHorizontal: 10,
+    paddingVertical: 12,
+    paddingHorizontal: 12,
     backgroundColor: '#ff9a00',
     borderRadius: 30,
-    marginBottom: 20,
+    marginTop: 20,
   },
 });

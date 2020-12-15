@@ -27,8 +27,8 @@ export const Category = ({navigation, title, img}) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#ff9a00',
-    width: width * 0.3,
-    height: height * 0.15,
+    width: 130,
+    height: 120,
     justifyContent: 'center',
     alignItems: 'flex-start',
     borderRadius: 20,

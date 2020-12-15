@@ -1,4 +1,3 @@
-import Axios from 'axios';
 import React, {useState, useEffect} from 'react';
 import {
   View,
@@ -13,58 +12,9 @@ import {
 import {Icon} from '../../component/Icon';
 import axios from 'axios';
 import ProgressLoader from 'rn-progress-loader';
+import {RenderItem} from './RenderItem';
 
 const {width, height} = Dimensions.get('window');
-
-const RenderItem = ({title, image, navigation}) => {
-  const [data, setData] = useState([]);
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    async function fetchData() {
-      let res = await axios.get(
-        `https://www.themealdb.com/api/json/v1/1/search.php?s=${title}`,
-      );
-      setData(res.data);
-      let counter = 0;
-      for (let i = 1; i <= 20; i++) {
-        if (res.data.meals[0]['strIngredient' + i] !== '') {
-          counter++;
-        }
-      }
-      setCount(counter);
-    }
-    fetchData();
-  }, []);
-  return (
-    <>
-      <TouchableOpacity
-        onPress={() =>
-          navigation.push('Detail', {data: data, ingredient: count})
-        }>
-        <View style={styles.renderItem}>
-          <View style={{flex: 3}}>
-            <Image source={{uri: image}} style={styles.image} />
-          </View>
-          <View style={{flex: 6, justifyContent: 'space-between'}}>
-            <Text style={styles.title}>{title}</Text>
-            <View
-              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Icon AntDesign name="like2" size={22} color="black" />
-                <Text style={styles.text}>100</Text>
-              </View>
-              <View style={{flexDirection: 'row'}}>
-                <Text style={styles.tag}>food</Text>
-                <Text style={styles.tag}>fastfood</Text>
-              </View>
-            </View>
-          </View>
-        </View>
-      </TouchableOpacity>
-    </>
-  );
-};
 
 export const List = ({route, navigation}) => {
   const [data, setData] = useState([]);
@@ -128,7 +78,6 @@ export const List = ({route, navigation}) => {
                 />
               )}
               keyExtractor={(item) => item.idMeal}
-              // removeClippedSubviews={true}
               initialNumToRender={3}
               maxToRenderPerBatch={3}
               updateCellsBatchingPeriod={50}

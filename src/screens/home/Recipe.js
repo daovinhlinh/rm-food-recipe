@@ -7,12 +7,13 @@ import {
   Dimensions,
   Image,
 } from 'react-native';
-const image = require('../../asset/salad.jpg');
 import {Icon} from '../../component/Icon';
+import {connect} from 'react-redux';
+import {AddToFavorite} from '../../actions';
 
 const {width, height} = Dimensions.get('window');
 
-export const Recipe = ({navigation, title, data}) => {
+const Recipe = ({navigation, data, AddToFavorite}) => {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
@@ -50,17 +51,21 @@ export const Recipe = ({navigation, title, data}) => {
           </View>
         </View>
       </View>
-      <TouchableOpacity style={styles.icon}>
-        <Icon Ionicons name="heart-circle" size={70} color={'white'} />
-      </TouchableOpacity>
     </TouchableOpacity>
   );
 };
 
+const mapStateToProps = (state) => {
+  return {
+    _product: state.favoriteFood,
+  };
+};
+
+export default connect(mapStateToProps, {AddToFavorite: AddToFavorite})(Recipe);
+
 const styles = StyleSheet.create({
   container: {
     width: width * 0.95,
-    // marginRight: 20,
     justifyContent: 'space-between',
     backgroundColor: 'white',
     borderRadius: 20,

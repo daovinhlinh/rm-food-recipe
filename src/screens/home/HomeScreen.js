@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import {Icon} from '../../component/Icon';
 import {Category} from './Category';
-import {Recipe} from './Recipe';
+import Recipe from './Recipe';
 import axios from 'axios';
 import ProgressLoader from 'rn-progress-loader';
 

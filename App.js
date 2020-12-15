@@ -10,13 +10,17 @@ import {
 import {BottomTab} from './src/navigation/BottomTab';
 import {NavigationContainer} from '@react-navigation/native';
 import {StackNavigation} from './src/navigation/StackNavigation';
+import {Provider} from 'react-redux';
+import {createStore} from 'redux';
+import reducers from './src/reducers';
 
 const App = () => {
   return (
-    <NavigationContainer>
-      {/* <BottomTab /> */}
-      <StackNavigation />
-    </NavigationContainer>
+    <Provider store={createStore(reducers)}>
+      <NavigationContainer>
+        <StackNavigation />
+      </NavigationContainer>
+    </Provider>
   );
 };
 
